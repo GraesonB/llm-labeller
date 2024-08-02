@@ -3,19 +3,24 @@ from abc import ABC, abstractmethod
 
 class Model(ABC):
 
-    @abstractmethod
     @property
-    def endpoint(self):
+    @abstractmethod
+    def url(self):
         pass
 
-    @abstractmethod
     @property
+    @abstractmethod
     def input_token_cost(self):
         pass
 
-    @abstractmethod
     @property
+    @abstractmethod
     def output_token_cost(self):
+        pass
+
+    @property
+    @abstractmethod
+    def headers(self):
         pass
 
     @abstractmethod
