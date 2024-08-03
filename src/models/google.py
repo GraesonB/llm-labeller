@@ -19,6 +19,9 @@ class Gemini(Model):
     def headers(self):
         return {"Content-Type": "application/json"}
 
+    def __str__(self):
+        return "Gemini Flash"
+
     def format_body(self, prompt: str) -> dict:
         return {"contents": [{"parts": [{"text": prompt}]}]}
 

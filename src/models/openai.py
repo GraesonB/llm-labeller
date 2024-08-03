@@ -22,6 +22,9 @@ class GPT4oMini(Model):
             "Authorization": f"Bearer {OPENAI_API_KEY}",
         }
 
+    def __str__(self):
+        return "GPT 4o Mini"
+
     def format_body(self, prompt: str) -> dict:
         return {
             "model": "gpt-4o-mini",

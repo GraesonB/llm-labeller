@@ -27,6 +27,10 @@ class Model(ABC):
         pass
 
     @abstractmethod
+    def __str__(self) -> str:
+        pass
+
+    @abstractmethod
     def format_body(self, prompt: str) -> dict:
         pass
 

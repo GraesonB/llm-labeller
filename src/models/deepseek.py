@@ -26,6 +26,9 @@ class DeepSeek(Model):
             "Authorization": f"Bearer {DEEPSEEK_API_KEY}",
         }
 
+    def __str__(self):
+        return "DeepSeek V2"
+
     def format_body(self, prompt: str) -> dict:
         return {
             "model": "deepseek-chat",
