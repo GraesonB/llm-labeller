@@ -5,6 +5,7 @@ from models.google import Gemini
 from models.openai import GPT4oMini
 from prompts.korean_lemma_labeller import prompt
 from rich import print
+from utils.clean_text import clean_text
 from utils.parse_response_tags import parse_tags
 
 if __name__ == "__main__":
@@ -15,11 +16,14 @@ if __name__ == "__main__":
         gpt4o = GPT4oMini()
         claude = ClaudeHaiku()
         # sentence = "하교에 가고 있어"
-        sentence = "9점 이상을 쏘면 승리가 확정되는 상황, 김우진은 깨끗한 10점으로 금메달을 명중시켰습니다."
+        sentence = "낮에는 선장님! ☀️                       밤에는 가수다! 🌜"
+        # sentence = "9점 이상을 쏘면 승리가 확정되는 상황, 김우진은 깨끗한 10점으로 금메달을 명중시켰습니다."
 
         for model in [gemini, deepseek, gpt4o, claude]:
             print(f"Model: {model}")
-            output, usage, seconds = await model.label(prompt, {"sentence": sentence})
+            output, usage, seconds = await model.label(
+                prompt, {"sentence": clean_text(sentence)}
+            )
             print("Output:")
             print(parse_tags(output))
             print("Usage metrics:")
