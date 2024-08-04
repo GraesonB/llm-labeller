@@ -1,7 +1,7 @@
 import re
 
 
-def clean_text(text):
+def clean_text_simple(text):
     # Remove emojis and special characters
     cleaned_text = re.sub(r"[^\w\sㄱ-ㅎ가-힣]", "", text)
     # Reduce multiple spaces to a single space

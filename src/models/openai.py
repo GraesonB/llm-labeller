@@ -1,29 +1,42 @@
 from constants import OPENAI_API_KEY
 from models.model import Model
 
+model_costs = {
+    "gpt-4o-mini": {
+        "input": 0.15 / 1000000,
+        "output": 0.6 / 1000000,
+    }
+}
 
-class GPT4oMini(Model):
+
+class OpenAI(Model):
+
+    def __init__(self, api_key: str = None, model_name: str = "gpt-4o-mini"):
+        self.model_name = model_name
+        self.api_key = api_key
+        super().__init__()
+
     @property
     def url(self):
         return f"https://api.openai.com/v1/chat/completions"
 
     @property
     def input_token_cost(self):
-        return 0.15 / 1000000
+        return model_costs[self.model_name]["input"]
 
     @property
     def output_token_cost(self):
-        return 0.6 / 1000000
+        return model_costs[self.model_name]["output"]
 
     @property
     def headers(self):
         return {
             "Content-Type": "application/json",
-            "Authorization": f"Bearer {OPENAI_API_KEY}",
+            "Authorization": f"Bearer {self.api_key}",
         }
 
     def __str__(self):
-        return "GPT 4o Mini"
+        return f"OpenAI ({self.model_name})"
 
     def format_body(self, prompt: str) -> dict:
         return {

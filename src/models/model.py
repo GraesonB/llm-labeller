@@ -1,10 +1,12 @@
 from abc import ABC, abstractmethod
 import time
-from rich import print
 from aiohttp import ClientSession
 
 
 class Model(ABC):
+    def __init__(self):
+        if not self.api_key:
+            raise ValueError(f"({self}) API key must be set.")
 
     @property
     @abstractmethod

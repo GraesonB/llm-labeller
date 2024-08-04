@@ -1,26 +1,38 @@
 from constants import GOOGLE_API_KEY
 from models.model import Model
 
+model_costs = {
+    "gemini-1.5-flash": {
+        "input": 0.35 / 1000000,
+        "output": 1.05 / 1000000,
+    }
+}
+
 
 class Gemini(Model):
+    def __init__(self, api_key: str = None, model_name: str = "gemini-1.5-flash"):
+        self.model_name = model_name
+        self.api_key = api_key
+        super().__init__()
+
     @property
     def url(self):
-        return f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GOOGLE_API_KEY}"
+        return f"https://generativelanguage.googleapis.com/v1beta/models/{self.model_name}:generateContent?key={self.api_key}"
 
     @property
     def input_token_cost(self):
-        return 0.35 / 1000000
+        return model_costs[self.model_name]["input"]
 
     @property
     def output_token_cost(self):
-        return 1.05 / 1000000
+        return model_costs[self.model_name]["output"]
 
     @property
     def headers(self):
         return {"Content-Type": "application/json"}
 
     def __str__(self):
-        return "Gemini Flash"
+        return f"Gemini ({self.model_name})"
 
     def format_body(self, prompt: str) -> dict:
         return {"contents": [{"parts": [{"text": prompt}]}]}

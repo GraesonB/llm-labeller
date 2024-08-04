@@ -1,37 +1,51 @@
 from constants import DEEPSEEK_API_KEY
 from models.model import Model
 
+model_costs = {
+    "deepseek-chat": {
+        "input": 0.14 / 1000000,
+        "input_cache": 0.014 / 1000000,
+        "output": 0.28 / 1000000,
+    }
+}
+
 
 class DeepSeek(Model):
+
+    def __init__(self, api_key: str = None, model_name: str = "deepseek-chat"):
+        self.model_name = model_name
+        self.api_key = api_key
+        super().__init__()
+
     @property
     def url(self):
         return f"https://api.deepseek.com/chat/completions"
 
     @property
     def input_token_cost(self):
-        return 0.14 / 1000000
+        return model_costs[self.model_name]["input"]
 
     @property
     def input_cache_hit_cost(self):
-        return 0.014 / 1000000
+        return model_costs[self.model_name]["input_cache"]
 
     @property
     def output_token_cost(self):
-        return 0.28 / 1000000
+        return model_costs[self.model_name]["output"]
 
     @property
     def headers(self):
         return {
             "Content-Type": "application/json",
-            "Authorization": f"Bearer {DEEPSEEK_API_KEY}",
+            "Authorization": f"Bearer {self.api_key}",
         }
 
     def __str__(self):
-        return "DeepSeek V2"
+        return f"DeepSeek ({self.model_name})"
 
     def format_body(self, prompt: str) -> dict:
         return {
-            "model": "deepseek-chat",
+            "model": self.model_name,
             "messages": [
                 {"role": "user", "content": prompt},
             ],
