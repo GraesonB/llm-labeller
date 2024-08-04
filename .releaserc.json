@@ -1,16 +1,26 @@
 {
-  "branches": ["release"],
-  "repositoryUrl": "https://gitlab.com/<USER>/<REPO>.git",
-  "plugins": [
-    "@semantic-release/commit-analyzer",
-    "@semantic-release/release-notes-generator",
-    "@semantic-release/changelog",
-    ["@semantic-release/gitlab", {
-      "gitlabUrl": "https://gitlab.com"
-    }],
-    ["@semantic-release/git", {
-      "assets": ["CHANGELOG.md"],
-      "message": "chore(release): ${nextRelease.version} \n\n${nextRelease.notes}"
-    }]
-  ]
+    "branches": [
+        "release"
+    ],
+    "repositoryUrl": "https://github.com/GraesonB/llm-labeller",
+    "plugins": [
+        "@semantic-release/commit-analyzer",
+        "@semantic-release/release-notes-generator",
+        "@semantic-release/changelog",
+        [
+            "@semantic-release/gitlab",
+            {
+                "gitlabUrl": "https://gitlab.com"
+            }
+        ],
+        [
+            "@semantic-release/git",
+            {
+                "assets": [
+                    "CHANGELOG.md"
+                ],
+                "message": "chore(release): ${nextRelease.version} \n\n${nextRelease.notes}"
+            }
+        ]
+    ]
 }

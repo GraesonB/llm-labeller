@@ -1,5 +1,4 @@
-from constants import GOOGLE_API_KEY
-from models.model import Model
+from .model import Model
 
 model_costs = {
     "gemini-1.5-flash": {

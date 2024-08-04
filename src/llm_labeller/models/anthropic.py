@@ -1,5 +1,4 @@
-from constants import ANTHROPIC_API_KEY
-from models.model import Model
+from .model import Model
 
 model_costs = {
     "claude-3-haiku-20240307": {
