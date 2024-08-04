@@ -1,46 +1,34 @@
 prompt = """
-You are tasked with lemmatizing a Korean sentence. Your goal is to identify the lemmas (base forms) of the words or meaningful phrases in the sentence and provide the corresponding original text found in the sentence, including any grammar particles.
+You are tasked with lemmatizing a Korean sentence. Your goal is to return the lemmas of each word while following specific rules for handling verb conjugations and grammar particles.
 
-Here is the Korean sentence you need to process:
+Here is the Korean sentence to lemmatize:
 <korean_sentence>
 {sentence}
 </korean_sentence>
 
-Your output should be a JSON object with the following structure:
-- An array containing a single object with two keys:
-  1. **"original_sentence"**: The full original Korean sentence
-  2. **"lemmatized_annotation"**: An array of objects, each representing a lemma found in the sentence
+Follow these rules when lemmatizing:
+1. For verb conjugations, only return the lemma of the main verb. Do not include auxiliary verbs or conjugation endings as separate lemmas.
+2. Identify each word or phrase in the sentence and provide its corresponding lemma.
+3. In the 'found' field, the word should be included as found in the text (including verb conjugations and particles), and the 'lemma' field should only include the lemma following the rules above.
 
-Each object in the "lemmatized_annotation" array should have:
-- **"found"**: The exact original text (word or phrase) as it appears in the sentence, including any grammar particles but excluding punctuation.
-- **"lemma"**: The base form (lemma) of the word or phrase, excluding grammar particles.
 
-Follow these steps to process the sentence:
-1. Identify each meaningful word, phrase, or particle in the sentence.
-2. For each identified word or phrase:
-   a. Determine its lemma (base form), excluding any grammar particles.
-   b. Extract the exact text as it appears in the original sentence, including any attached grammar particles but excluding punctuation.
-   c. Create an object with the "found" and "lemma" information.
-3. Add all created objects to the "lemmatized_annotation" array.
-
-### Special Instructions
-- **Include Content Words with Grammar Particles**: The "found" entry should include the entire segment from the sentence, including any attached grammar particles (e.g., 은, 는, 이, 가, 을, 를, etc.). The "lemma" should exclude these particles and represent only the base form.
-- **Proper Nouns and Numerals**: Treat proper nouns and numerals as complete units. For example, "김우진은" should be represented as "found": "김우진은", "lemma": "김우진". For numerals, "9점 이상을" should be "found": "9점 이상을", "lemma": "점 이상".
-- **Exclusion of Punctuation**: Do not include punctuation marks in the "found" entry. Only include words and grammar particles.
-- **Combine Compound Words or Phrases**: Treat compound words or phrases that function as a single unit as one lemma. For example, "가고 있어요" should be "found": "가고 있어요", "lemma": "가다".
+When handling verb conjugations like "-고 있다", return only the lemma of the main verb. For example, "가고 있어" should be lemmatized to "가다", not "가다" and "있다" separately.
 
 Format your response as a valid JSON object, ensuring all brackets, commas, and quotation marks are correctly placed. Wrap your entire output in <answer> tags.
 
+Example response for input "하교에 가고 있어":
 <answer>
 [
   {{
-    "original_sentence": "{sentence}",
+    "original_sentence": "하교에 가고 있어",
     "lemmatized_annotation": [
-      {{ "found": "original_text_1", "lemma": "lemma_1" }},
-      {{ "found": "original_text_2", "lemma": "lemma_2" }},
-      ...
+      {{ "found": "하교에", "lemma": "하교" }},
+      {{ "found": "가고 있어", "lemma": "가다" }}
     ]
   }}
 ]
 </answer>
+
+
+Now, please lemmatize the given Korean sentence and provide the result in the specified format.
 """
