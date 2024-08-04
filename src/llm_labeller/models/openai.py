@@ -39,7 +39,7 @@ class OpenAI(Model):
 
     def format_body(self, prompt: str) -> dict:
         return {
-            "model": "gpt-4o-mini",
+            "model": self.model_name,
             "messages": [
                 {
                     "role": "user",
