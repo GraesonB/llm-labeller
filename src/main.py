@@ -5,7 +5,7 @@ from models.google import Gemini
 from models.openai import GPT4oMini
 from prompts.korean_lemma_labeller import prompt
 from rich import print
-
+from utils.parse_response_tags import parse_tags
 
 if __name__ == "__main__":
 
@@ -19,9 +19,9 @@ if __name__ == "__main__":
 
         for model in [gemini, deepseek, gpt4o, claude]:
             print(f"Model: {model}")
-            output, usage, seconds = await gemini.label(prompt, {"sentence": sentence})
+            output, usage, seconds = await model.label(prompt, {"sentence": sentence})
             print("Output:")
-            print(output)
+            print(parse_tags(output))
             print("Usage metrics:")
             print(usage)
             print(f"Seconds Taken: {seconds}")
