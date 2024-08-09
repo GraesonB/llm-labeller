@@ -15,7 +15,7 @@ setup(
     description="A package for leveraging LLMS for dataset creation",
     # long_description=open("README.md").read(),
     # long_description_content_type="text/markdown",
-    author="Graeon Bergen",
+    author="Graeson Bergen",
     author_email="graesonbergen@gmail.com",
     url="https://github.com/GraesonB/llm-labeller",
     packages=find_packages(where="src"),
