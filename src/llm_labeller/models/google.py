@@ -2,8 +2,8 @@ from .model import Model
 
 model_costs = {
     "gemini-1.5-flash": {
-        "input": 0.35 / 1000000,
-        "output": 1.05 / 1000000,
+        "input": 0.075 / 1000000,
+        "output": 0.3 / 1000000,
     }
 }
 
