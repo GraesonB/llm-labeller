@@ -52,6 +52,8 @@ class DeepSeek(Model):
         }
 
     def parse_output_text(self, model_output: dict) -> str:
+        if "error" in model_output:
+            raise Exception(model_output["error"]["message"])
         text = model_output["choices"][0]["message"]["content"]
         return text
 
