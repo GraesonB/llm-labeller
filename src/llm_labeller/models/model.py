@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import time
 from aiohttp import ClientSession
+from rich import print
 
 
 class Model(ABC):
@@ -52,6 +53,8 @@ class Model(ABC):
             start = time.time()
             res = await session.post(self.url, json=body)
             res_json = await res.json()
+            print("LLM Response:")
+            print(res_json)
             end = time.time()
 
         text = self.parse_output_text(res_json)
