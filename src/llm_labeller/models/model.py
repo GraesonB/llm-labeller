@@ -52,9 +52,9 @@ class Model(ABC):
         async with ClientSession(headers=self.headers) as session:
             start = time.time()
             res = await session.post(self.url, json=body)
+            if res.status == 429:
+                raise Exception(f"({self}): Rate limited")
             res_json = await res.json()
-            print("LLM Response:")
-            print(res_json)
             end = time.time()
 
         text = self.parse_output_text(res_json)
