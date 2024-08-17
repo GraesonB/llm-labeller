@@ -54,6 +54,13 @@ class Model(ABC):
             res = await session.post(self.url, json=body)
             if res.status == 429:
                 raise Exception(f"({self}): Rate limited")
+            elif res.status == 401:
+                if hasattr(self, "update_api_key"):
+                    print(f"({self}): Unauthorized, updating API key...")
+                    self.update_api_key()
+                    return await self.label(prompt, prompt_params)
+                else:
+                    raise Exception(f"({self}): Unauthorized")
             res_json = await res.json()
             end = time.time()
 
