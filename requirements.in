@@ -1,3 +1,5 @@
 python-dotenv
 rich
 aiohttp
+google-auth
+requests
