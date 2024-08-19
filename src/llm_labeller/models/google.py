@@ -51,13 +51,19 @@ class Gemini(Model):
             "safetySettings": [
                 {
                     "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-                    "threshold": "BLOCK_NONE",
+                    "threshold": "BLOCK_ONLY_HIGH",
                 },
-                {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
-                {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
+                {
+                    "category": "HARM_CATEGORY_HATE_SPEECH",
+                    "threshold": "BLOCK_ONLY_HIGH",
+                },
+                {
+                    "category": "HARM_CATEGORY_HARASSMENT",
+                    "threshold": "BLOCK_ONLY_HIGH",
+                },
                 {
                     "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-                    "threshold": "BLOCK_NONE",
+                    "threshold": "BLOCK_ONLY_HIGH",
                 },
             ],
             "generationConfig": {"temperature": self.temperature},
@@ -126,3 +132,16 @@ class GeminiGCP(Gemini):
 
     def update_api_key(self):
         self.api_key = self._get_bearer_token()
+
+
+if __name__ == "__main__":
+    gemini = GeminiGCP(
+        project_id="vibrant-vector-432803-m8",
+        location="us-central1",
+        service_account_key_path="/Users/graesonbergen/keys/vertex-ai-gcp.json",
+    )
+
+    async def main():
+        print(await gemini.label("hello {name}", {"name": "Graeson"}))
+
+    asyncio.run(main())
