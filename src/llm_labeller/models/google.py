@@ -127,6 +127,30 @@ class GeminiGCP(Gemini):
     def update_api_key(self):
         self.api_key = self._get_bearer_token()
 
+    def format_body(self, prompt: str) -> dict:
+        return {
+            "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+            "safetySettings": [
+                {
+                    "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                    "threshold": "BLOCK_ONLY_HIGH",
+                },
+                {
+                    "category": "HARM_CATEGORY_HATE_SPEECH",
+                    "threshold": "BLOCK_ONLY_HIGH",
+                },
+                {
+                    "category": "HARM_CATEGORY_HARASSMENT",
+                    "threshold": "BLOCK_ONLY_HIGH",
+                },
+                {
+                    "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                    "threshold": "BLOCK_ONLY_HIGH",
+                },
+            ],
+            "generationConfig": {"temperature": self.temperature},
+        }
+
 
 if __name__ == "__main__":
     gemini = GeminiGCP(
