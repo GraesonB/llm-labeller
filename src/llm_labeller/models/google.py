@@ -10,7 +10,11 @@ model_costs = {
     "gemini-1.5-flash": {
         "input": 0.075 / 1000000,
         "output": 0.3 / 1000000,
-    }
+    },
+    "gemini-1.5-pro": {
+        "input": 3.5 / 1000000,
+        "output": 7 / 1000000,
+    },
 }
 
 
