@@ -131,7 +131,11 @@ class GeminiTuned(Gemini):
         return model_costs["gemini-1.5-flash"]["output"]
 
     def _get_bearer_token(self):
-        if not self.token_expiry or time.time() > self.token_expiry:
+        if (
+            self.credentials
+            and self.credentials.expired
+            and self.credentials.refresh_token
+        ):
             self.credentials.refresh(Request())
             self.token_expiry = self.credentials.expiry.timestamp()
         return self.credentials.token
