@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 import json
 import time
-from typing import Dict
+from typing import Dict, List, Union
 from aiohttp import ClientSession
 from rich import print
 
@@ -49,7 +49,9 @@ class Model(ABC):
     def parse_output_text(self, model_output: dict) -> dict:
         pass
 
-    async def invoke(self, prompt: Prompt, input_parameters: Dict[str, str]) -> str:
+    async def invoke(
+        self, prompt: Prompt, input_parameters: Dict[str, str]
+    ) -> Union[Dict, List, str]:
         body = self.format_body(prompt.render(input_parameters))
 
         async with ClientSession(headers=self.headers) as session:
@@ -73,11 +75,11 @@ class Model(ABC):
 
         if prompt.output_type == "json":
             try:
-                output = json.loads(text)
+                output = json.loads(text[prompt.output_field])
             except json.JSONDecodeError:
                 print(f"({self}): Failed to parse JSON output: {text}")
         else:
-            output = text
+            output = text[prompt.output_field]
 
         return {
             "output": output,
