@@ -5,7 +5,6 @@ import google.auth
 from google.auth.transport.requests import Request
 from google.oauth2 import service_account
 from google.oauth2.credentials import Credentials
-from llm_labeller.utils.parse_response_tags import parse_tags
 from .model import Model
 
 model_costs = {
@@ -262,6 +261,6 @@ Now, please lemmatize the given Korean sentence and provide the result in the sp
             },
         )
 
-        print(parse_tags(output, json_output=True)["answer"])
+        # print(parse_tags(output, json_output=True)["answer"])
 
     asyncio.run(main())

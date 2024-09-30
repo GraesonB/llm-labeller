@@ -1,7 +1,11 @@
 from abc import ABC, abstractmethod
+import json
 import time
+from typing import Dict
 from aiohttp import ClientSession
 from rich import print
+
+from llm_labeller.prompt import Prompt
 
 
 class Model(ABC):
@@ -45,9 +49,8 @@ class Model(ABC):
     def parse_output_text(self, model_output: dict) -> dict:
         pass
 
-    async def label(self, prompt: str, prompt_params: dict) -> str:
-        formatted_prompt = prompt.format(**prompt_params)
-        body = self.format_body(formatted_prompt)
+    async def invoke(self, prompt: Prompt, input_parameters: Dict[str, str]) -> str:
+        body = self.format_body(prompt.render(input_parameters))
 
         async with ClientSession(headers=self.headers) as session:
             start = time.time()
@@ -58,7 +61,7 @@ class Model(ABC):
                 if hasattr(self, "update_api_key"):
                     print(f"({self}): Unauthorized, updating API key...")
                     self.update_api_key()
-                    return await self.label(prompt, prompt_params)
+                    return await self.invoke(prompt)
                 else:
                     raise Exception(f"({self}): Unauthorized")
             res_json = await res.json()
@@ -68,4 +71,16 @@ class Model(ABC):
         token_usage = self.get_token_cost(res_json)
         seconds = end - start
 
-        return text, token_usage, seconds
+        if prompt.output_type == "json":
+            try:
+                output = json.loads(text)
+            except json.JSONDecodeError:
+                print(f"({self}): Failed to parse JSON output: {text}")
+        else:
+            output = text
+
+        return {
+            "output": output,
+            "token_usage": token_usage,
+            "seconds": seconds,
+        }
