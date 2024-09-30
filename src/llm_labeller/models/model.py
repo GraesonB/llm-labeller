@@ -4,7 +4,7 @@ import time
 from typing import Dict, List, Union
 from aiohttp import ClientSession
 from rich import print
-
+from llm_labeller.utils.tag_extraction import extract_tags
 from llm_labeller.prompt import Prompt
 
 
@@ -75,11 +75,11 @@ class Model(ABC):
 
         if prompt.output_type == "json":
             try:
-                output = json.loads(text[prompt.output_field])
+                output = json.loads(extract_tags(text)[prompt.output_field])
             except json.JSONDecodeError:
                 print(f"({self}): Failed to parse JSON output: {text}")
         else:
-            output = text[prompt.output_field]
+            output = extract_tags(text)[prompt.output_field]
 
         return {
             "output": output,
