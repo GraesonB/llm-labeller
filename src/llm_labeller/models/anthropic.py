@@ -4,7 +4,11 @@ model_costs = {
     "claude-3-haiku-20240307": {
         "input": 0.25 / 1000000,
         "output": 1.25 / 1000000,
-    }
+    },
+    "claude-3-5-sonnet-20240620": {
+        "input": 3.0 / 1000000,
+        "output": 15.0 / 1000000,
+    },
 }
 
 
